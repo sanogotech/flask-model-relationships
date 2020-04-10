@@ -1,25 +1,18 @@
-from flask import Flask, render_template, jsonify, request, abort
-from flask_sqlalchemy import SQLAlchemy
+import pytest
+import os
 from datetime import datetime
-import os, json
-from movie import app,db
+from app import app,db
 from  movie.models import *
 
+basedir = os.path.abspath(os.path.dirname(__file__)) 
 
-
-
-@app.cli.command("initdb")
-def reset_db():
-    """Drops and Creates fresh database"""
-    db.drop_all()
-    db.create_all()
-
-    print("Initialized default DB")
-
-
-@app.cli.command("populatedbcmd")
-#@app.cli.command("bootstrap")
-def bootstrap_data():
+@pytest.fixture
+def setup_db(request):
+    app.config['TESTING'] = True
+    app.config['CSRF_ENABLED'] = False
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'test.db')
+    
+    #boostrap db command data
     """Populates database with data"""
     db.drop_all()
     db.create_all()
@@ -137,7 +130,14 @@ def bootstrap_data():
     db.session.commit()
 
     print("Added development dataset")
+    
+    # Tearndown
+    def tearndown():
+        db.session.remove()
+        db.drop_all()
+    request.addfinalizer(tearndown)
+
+def test_onetomanay(setup_db):
+    pass
 
 
-if __name__ == "__main__":
-    app.run(debug=True)

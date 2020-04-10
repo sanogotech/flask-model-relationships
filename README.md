@@ -1,5 +1,9 @@
 # Flask | Flask-SQLAlchemy Model Relationships
 
+##  Youtube
+https://youtu.be/4gRMV-wZTQs
+Flask & Flask-SQLAlchemy Model Relationships : darkyodeler
+
 A simple example demonstrating the progression of adding relationships to SQLAlchemy models in a Flask project.
 
 [Documentation for SQLAlchemy relationships](http://flask-sqlalchemy.pocoo.org/2.3/models/).
